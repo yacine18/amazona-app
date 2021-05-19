@@ -1,52 +1,45 @@
 import React from 'react'
-import data from './data'
+import { useSelector } from 'react-redux';
+import { BrowserRouter, Link, Route } from 'react-router-dom'
+import CartScreen from './screens/CartScreen';
+import HomeScreen from './screens/HomeScreen';
+import ProductScreen from './screens/ProductScreen';
 
 const App = () => {
+
+  const cart = useSelector(state => state.cart)
+  const { cartItems } = cart
+
   return (
-    <div className="grid-container">
-      <header className="row">
-        <div className="row">
-          <a className="brand" href="/">amazona</a>
-        </div>
-        <div>
-          <a href="/cart">Cart</a>
-          <a href="/singin">Sign In</a>
-        </div>
-      </header>
-      <main>
-        <div className="row center">
-          {
-           data.products.map(product => (
-              <div className="card" key={product._id}>
-                <a href={`/product/${product._id}`}>
-                  <img className="medium" src={product.image} alt={product.name} />
-                </a>
-                <div className="card-body">
-                  <a href={`/product/${product._id}`}>
-                    <h2>{product.name}</h2>
-                  </a>
-                  <div className="rating">
-                    <span><i className="fa fa-star"></i></span>
-                    <span><i className="fa fa-star"></i></span>
-                    <span><i className="fa fa-star"></i></span>
-                    <span><i className="fa fa-star"></i></span>
-                    <span><i className="fa fa-star-0"></i></span>
-                  </div>
-                  <div>
-                    <div className="price">${product.price}</div>
-                  </div>
-                </div>
-              </div>
-            ))
-          }
+    <BrowserRouter>
+      <div className="grid-container">
+        <header className="row">
+          <div className="row">
+            <Link className="brand" to="/">amazona</Link>
+          </div>
+          <div>
+            <Link to="/cart">Cart
+            {
+              cartItems.length > 0 && (
+                <span className="badge">{cartItems.length}</span>
+              )
+            }
+            </Link>
+            <Link to="/singin">Sign In</Link>
+          </div>
+        </header>
+        <main>
 
+          <Route path='/cart/:id?' component={CartScreen}></Route>
+          <Route path="/product/:id" component={ProductScreen}></Route>
+          <Route path="/" exact component={HomeScreen}></Route>
 
-        </div>
-      </main>
-      <footer className="row center">
-        All right reserved
+        </main>
+        <footer className="row center">
+          All right reserved
     </footer>
-    </div>
+      </div>
+    </BrowserRouter>
   );
 }
 
