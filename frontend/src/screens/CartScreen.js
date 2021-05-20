@@ -6,7 +6,9 @@ import { addToCart, removeFromCart } from '../actions/cartActions'
 
 const CartScreen = (props) => {
     const productId = props.match.params.id
-    const qty = props.location.search ? Number(props.location.search.split('=')[1]) : 1
+    const qty = props.location.search
+        ? Number(props.location.search.split('=')[1])
+        : 1;
 
     const dispatch = useDispatch()
     useEffect(() => {
@@ -19,11 +21,11 @@ const CartScreen = (props) => {
     const { cartItems } = cart;
 
     const removeFromCartHandler = id => {
-       dispatch(removeFromCart(id))
+        dispatch(removeFromCart(id))
     }
 
     const checkoutHandler = () => {
-        props.history.push('/singin?redirect=shipping')
+        props.history.push('/signin?redirect=shipping');
     }
     return (
         <div className="row top">
@@ -38,38 +40,38 @@ const CartScreen = (props) => {
                             <ul>
                                 {
                                     cartItems.map(item => {
-                                        return (
-                                            <li key={item.produt}>
-                                                <div className="row">
-                                                    <div>
-                                                        <img src={item.image} alt={item.name} className="small" />
-                                                    </div>
-                                                    <div className="min-30">
-                                                        <Link to={`/product/${item.product}`} >{item.name}</Link>
-                                                    </div>
-                                                    <div>
+                                            <div key={item.produt}>
+                                                <li>
+                                                    <div className="row">
+                                                        <div>
+                                                            <img src={item.image} alt={item.name} className="small" />
+                                                        </div>
+                                                        <div className="min-30">
+                                                            <Link to={`/product/${item.product}`} >{item.name}</Link>
+                                                        </div>
+                                                        <div>
                                                         <select
-                                                            value={item.qty}
-                                                            onChange={(e) =>
-                                                                dispatch(
-                                                                    addToCart(item.product, Number(e.target.value))
-                                                                )
-                                                            }
-                                                        >
-                                                            {[...Array(item.countStock).keys()].map((x) => (
-                                                                <option key={x + 1} value={x + 1}>
-                                                                    {x + 1}
-                                                                </option>
-                                                            ))}
-                                                        </select>
+                                                                value={item.qty}
+                                                                onChange={(e) =>
+                                                                    dispatch(
+                                                                        addToCart(item.product, Number(e.target.value))
+                                                                    )
+                                                                }
+                                                            >
+                                                                {[...Array(item.countStock).keys()].map((x) => (
+                                                                    <option key={x + 1} value={x + 1}>
+                                                                        {x + 1}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                        <div>${item.price}</div>
+                                                        <div>
+                                                            <button type="button" onClick={() => removeFromCartHandler(item.product)}>Delete</button>
+                                                        </div>
                                                     </div>
-                                                    <div>${item.price}</div>
-                                                    <div>
-                                                        <button type="button" onClick={() => removeFromCartHandler(item.product)}>Delete</button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        )
+                                                </li>
+                                            </div>
 
                                     })
                                 }
