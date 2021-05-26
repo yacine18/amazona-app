@@ -20,6 +20,9 @@ const orderSchema = new mongoose.Schema({
     paymentMethod: {
         type: String, required: true
     },
+    seller:{
+        type:mongoose.Schema.Types.ObjectId, ref: 'User'
+   },
     paymentResult:{
         id: String,
         status: String,

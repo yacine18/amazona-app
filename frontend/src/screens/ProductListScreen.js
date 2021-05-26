@@ -6,8 +6,12 @@ import MessageBox from '../components/MessageBox'
 import { PRODUCT_CREATE_RESET, PRODUCT_DELETE_RESET } from '../constants/productConstants'
 
 const ProductListScreen = (props) => {
+    const sellerMode = props.match.path.indexOf('/seller') >= 0
     const productList = useSelector(state => state.productList)
     const { loading, error, products } = productList
+
+    const userSignin = useSelector(state => state.userSignin)
+    const { userInfo } = userSignin
 
     const productCreate = useSelector(state => state.productCreate)
     const {
@@ -30,8 +34,8 @@ const ProductListScreen = (props) => {
         if(successDelete){
             dispatch({type:PRODUCT_DELETE_RESET})
         }
-        dispatch(listProducts())
-    }, [dispatch, props.history, successCreate, createdProduct, successDelete])
+        dispatch(listProducts({seller: sellerMode ? userInfo._id : ''}))
+    }, [dispatch, props.history, successCreate, sellerMode, createdProduct, successDelete, userInfo])
 
     const deleteHandler = (product) => {
         dispatch(deleteProduct(product._id))

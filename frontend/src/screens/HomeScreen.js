@@ -13,7 +13,7 @@ const HomeScreen = () => {
    const dispatch = useDispatch()
    const { loading, products, error } = productList
     useEffect(() => {
-       dispatch(listProducts())
+       dispatch(listProducts({}))
     }, [dispatch])
     return (
         <div className="row center">
